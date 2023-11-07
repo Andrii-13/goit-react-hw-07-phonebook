@@ -18,7 +18,8 @@ input{
     font-size: 15px;
     width: 250px;
     height: 26px;
-    outline: none;   
+    outline: none;  
+    border-radius: 5px;
 
    
     &:focus{

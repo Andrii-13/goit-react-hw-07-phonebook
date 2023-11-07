@@ -5,8 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from 'components/GlobalStyle';
 import { Provider } from 'react-redux';
-import { persistor, store } from 'redux/store';
-import { PersistGate } from 'reduxjs-toolkit-persist/integration/react';
+import { store } from 'redux/store';
+
 
 const theme = {
   colors: {
@@ -27,15 +27,13 @@ const theme = {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+    <Provider store={store}>      
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <App />
             <GlobalStyle />
           </ThemeProvider>
         </BrowserRouter>
-      </PersistGate>
     </Provider>
   </React.StrictMode>
 );
