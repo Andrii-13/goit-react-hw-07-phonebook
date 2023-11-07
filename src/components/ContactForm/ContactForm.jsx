@@ -10,7 +10,7 @@ const schema = object({
   name: string()
     .min(3, 'Too Short!')
     .max(50, 'Too Long!')
-    .required('Required!!!'),
+    .required('Required!'),
   number: number('must be a number').min(2, 'Too Short!').required('Required!'),
 });
 
