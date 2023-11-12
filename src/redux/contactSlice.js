@@ -1,4 +1,4 @@
-import { createSlice} from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { getContactsThunk, sendContactsThunk } from '../fetch/operations';
 
 const handlePanding = state => {
@@ -9,7 +9,6 @@ const handleFulfilled = (state, action) => {
   state.contacts.isLoading = false;
   state.contacts.error = false;
   state.contacts.items = action.payload;
- 
 };
 
 const handleRejected = (state, action) => {
@@ -41,12 +40,15 @@ const contactSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      // .addCase(sendContactsThunk.pending, handlePanding)
-      .addCase(getContactsThunk.pending, handlePanding) //для одного запиту
-      .addCase(getContactsThunk.fulfilled, handleFulfilled)
-      .addCase(getContactsThunk.rejected, handleRejected);
-    //.addMatcher(isAnyOf(getContactsThunk.pending, getContactsThunk.rejected, handleRejected), handlePanding)   // якщо хочаб один запи відбувається, то виконується
-  },
+      .addCase(sendContactsThunk.fulfilled, (state) => {
+        state.contacts.isLoading = false;
+        state.contacts.error = false;    
+    })
+      .addCase(getContactsThunk.fulfilled, handleFulfilled) 
+      .addCase(getContactsThunk.rejected, handleRejected)                                           //для одного запиту
+      .addMatcher(isAnyOf(getContactsThunk.pending, sendContactsThunk.pending), handlePanding) // якщо хочаб один запиn відбувається, то виконується
+      .addMatcher(isAnyOf(getContactsThunk.rejected, sendContactsThunk.rejected), handleRejected)
+    } ,
 });
 
 export const { addContacts, deleteContact } = contactSlice.actions;

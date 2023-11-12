@@ -37,7 +37,8 @@ export const ContactForm = () => {
       return;
     }
    dispatch(sendContactsThunk(values));
-   dispatch(getContactsThunk());
+   
+   
   };
 
   const initialValues = {
