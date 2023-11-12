@@ -1,6 +1,6 @@
 import { FieldEl, FormEl } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts } from 'redux/contactSlice';
+// import { addContacts } from 'redux/contactSlice';
 import { Formik } from 'formik';
 import { object, string, number } from 'yup';
 import FormError from 'components/FormError/FormError';
