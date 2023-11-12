@@ -1,35 +1,53 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
+import { createSlice} from '@reduxjs/toolkit';
+import { getContactsThunk, sendContactsThunk } from '../fetch/operations';
+
+const handlePanding = state => {
+  state.contacts.isLoading = true;
+};
+
+const handleFulfilled = (state, action) => {
+  state.contacts.isLoading = false;
+  state.contacts.error = false;
+  state.contacts.items = action.payload;
+ 
+};
+
+const handleRejected = (state, action) => {
+  state.contacts.isLoading = false;
+  state.contacts.error = true;
+};
 
 const contactSlice = createSlice({
-  // Ім'я слайсу
   name: 'contacts',
-  // Початковий стан редюсера слайсу
   initialState: {
-    contacts: [],
+    contacts: {
+      items: [],
+      isLoading: false,
+      error: null,
+    },
   },
-  // Об'єкт редюсерів 
-  // будемо перераховувати методи які в майбутньому будемо використовувати
+
   reducers: {
     addContacts(state, action) {
-      state.contacts.push({
-        id: nanoid(5),
+      state.contacts.items.push({
+        id: action.payload.id,
         name: action.payload.name,
         number: action.payload.number,
       });
     },
     deleteContact(state, action) {
-      state.contacts = action.payload;
+      state.contacts.items = action.payload;
     },
+  },
+  extraReducers: builder => {
+    builder
+      // .addCase(sendContactsThunk.pending, handlePanding)
+      .addCase(getContactsThunk.pending, handlePanding) //для одного запиту
+      .addCase(getContactsThunk.fulfilled, handleFulfilled)
+      .addCase(getContactsThunk.rejected, handleRejected);
+    //.addMatcher(isAnyOf(getContactsThunk.pending, getContactsThunk.rejected, handleRejected), handlePanding)   // якщо хочаб один запи відбувається, то виконується
   },
 });
 
-// Генератори екшенів
-//щоб запустити додавання треба створити екшн/ передати в UI/ викликати там екшн
-// і тоді редюсер зрозуміє що саме ця подія відбулась
-//звертаємось до нашого слайса і через крапку викликаємо екшини (створюються автоматично)
-export const { addContacts, deleteContact} = contactSlice.actions;
-
-// достаємо редюсер. саме його підключаємо в стор
-// contactSlice.reducer - кореневий редюсер - який формується із нашого reducers
+export const { addContacts, deleteContact } = contactSlice.actions;
 export const contactReducer = contactSlice.reducer;

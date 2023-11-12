@@ -1,10 +1,12 @@
 import { FieldEl, FormEl } from './ContactForm.styled';
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/contactSlice';
 import { Formik } from 'formik';
 import { object, string, number } from 'yup';
 import FormError from 'components/FormError/FormError';
+import { useEffect } from 'react';
+import { selectorContactItems } from 'redux/selectors';
+import { getContactsThunk, sendContactsThunk } from 'fetch/operations';
 
 const schema = object({
   name: string()
@@ -16,11 +18,15 @@ const schema = object({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(selectorContactItems);
+
+  useEffect(() => {  
+      dispatch(getContactsThunk());
+      
+  }, [dispatch]);
 
   const handleSubmit = (values, { resetForm }) => {
     resetForm();
-    console.log(values);
     if (
       contacts.find(
         ({ name: contactName }) =>
@@ -30,10 +36,8 @@ export const ContactForm = () => {
       alert(`${values.name} is already in contacts`);
       return;
     }
-
-    dispatch(
-      addContacts({ id: nanoid(5), name: values.name, number: values.number })
-    );
+   dispatch(sendContactsThunk(values));
+   dispatch(getContactsThunk());
   };
 
   const initialValues = {
