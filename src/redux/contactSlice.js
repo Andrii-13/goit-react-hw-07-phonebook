@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { addContact, fetchContacts } from 'redux/apiContacts';
+import { addContact, fetchContacts } from 'redux/operations';
 
 const handlePanding = state => {
   state.contacts.isLoading = true;
@@ -27,11 +27,7 @@ const contactSlice = createSlice({
   },
 
   reducers: {
-    // addContacts(state, action) {
-    //   state.contacts.items.push({
-    //     id: action.payload.id,
-    //   });
-    // },
+
     deleteContact(state, action) {
       state.contacts.items = action.payload;
     },

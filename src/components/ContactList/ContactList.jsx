@@ -17,11 +17,11 @@ export const ContactList = () => {
 
 
   const findContact = () => {
-    console.log(contacts);
-    console.log(filterContacts);
+    // console.log(contacts);
+    // console.log(filterContacts);
 
     const filterContact = contacts.filter(({ name }) => {
-      console.log(name);
+      // console.log(name);
       return name.includes(filterContacts);
     });
     return filterContact;

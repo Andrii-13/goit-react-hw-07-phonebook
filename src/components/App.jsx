@@ -13,7 +13,7 @@ import {
 } from 'redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrMessage from './ErrMessage/ErrMessage';
-import { fetchContacts } from '../redux/apiContacts';
+import { fetchContacts } from '../redux/operations';
 
 export const App = () => {
   const dispatch = useDispatch();
