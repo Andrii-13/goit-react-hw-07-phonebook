@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { addContact, fetchContacts } from 'redux/operations';
+import { addContact, deleteContact, fetchContacts } from 'redux/operations';
 
 const handlePanding = state => {
   state.contacts.isLoading = true;
@@ -7,8 +7,7 @@ const handlePanding = state => {
 
 const handleFulfilled = (state, action) => {
   state.contacts.isLoading = false;
-  state.contacts.error = null;
-  state.contacts.items = action.payload;
+  state.contacts.error = null;  
 };
 
 const handleRejected = (state, action) => {
@@ -26,25 +25,23 @@ const contactSlice = createSlice({
     },
   },
 
-  reducers: {
-
-    deleteContact(state, action) {
-      state.contacts.items = action.payload;
-    },
-  },
   extraReducers: builder => {
     builder
       .addCase(addContact.fulfilled, (state, action) => {
-        state.contacts.isLoading = false;
-        state.contacts.error = action.payload; 
-        state.contacts.items.push(action.payload)
-    })
-      .addCase(fetchContacts.fulfilled, handleFulfilled) 
-      .addCase(fetchContacts.rejected, handleRejected)                                           //для одного запиту
-      .addMatcher(isAnyOf(fetchContacts.pending, addContact.pending), handlePanding) // якщо хочаб один запиn відбувається, то виконується
-      .addMatcher(isAnyOf(fetchContacts.rejected, addContact.rejected), handleRejected)
-    } ,
+        state.contacts.items.push(action.payload);
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => { 
+        const index = state.contacts.items.findIndex(
+          item => item.id === action.payload.id
+          );
+        state.contacts.items.splice(index, 1);
+      })
+      .addCase(fetchContacts.fulfilled, (state, action) => {state.contacts.items = action.payload})
+      .addCase(fetchContacts.rejected, handleRejected)                                         //для одного запиту
+      .addMatcher(isAnyOf(fetchContacts.pending, addContact.pending, deleteContact.pending),handlePanding) // якщо хочаб один запиn відбувається, то виконується
+      .addMatcher(isAnyOf(fetchContacts.rejected, addContact.rejected, deleteContact.rejected),handleRejected)
+      .addMatcher(isAnyOf(addContact.fulfilled, deleteContact.fulfilled, fetchContacts.fulfilled),handleFulfilled)
+  },
 });
 
-export const { addContacts, deleteContact } = contactSlice.actions;
 export const contactReducer = contactSlice.reducer;

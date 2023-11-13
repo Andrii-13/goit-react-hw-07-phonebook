@@ -32,9 +32,9 @@ export const ContactForm = () => {
       alert(`${values.name} is already in contacts`);
       return;
     }
-   dispatch(addContact({name: values.name, number: values.number}));
-   console.log({name: values.name, number: values.number})
-   console.log(contacts);
+   dispatch(addContact(values));
+  
+   console.log(values);
   };
 
   const initialValues = {

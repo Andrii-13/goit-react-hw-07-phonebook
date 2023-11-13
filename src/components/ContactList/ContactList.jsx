@@ -1,6 +1,6 @@
 import { List } from './ContactList.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/contactSlice';
+import { deleteContact } from 'redux/operations';
 import { selectorContactItems, selectorFilter } from 'redux/selectors';
 
 export const ContactList = () => {
@@ -9,24 +9,16 @@ export const ContactList = () => {
   const dispatch = useDispatch();
 
   const onDeleteContact = contactId => {
-    const remainingContacts = contacts.filter(
-      contact => contact.id !== contactId
-    );
-    dispatch(deleteContact(remainingContacts));
+    dispatch(deleteContact(contactId));
   };
 
 
   const findContact = () => {
-    // console.log(contacts);
-    // console.log(filterContacts);
-
     const filterContact = contacts.filter(({ name }) => {
-      // console.log(name);
       return name.includes(filterContacts);
     });
     return filterContact;
   };
-  console.log(findContact());
   return (
     <List>
       {[
