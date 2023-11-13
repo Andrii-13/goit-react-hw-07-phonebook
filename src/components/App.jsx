@@ -12,8 +12,8 @@ import {
   selectorContactIsLoading,
 } from 'redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-// import ErrMessage from './ErrMessage/ErrMessage';
-import { fetchContacts } from './apiContacts';
+import ErrMessage from './ErrMessage/ErrMessage';
+import { fetchContacts } from '../redux/apiContacts';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export const App = () => {
         <Filter />
         <ContactList />
         {isLoading && <Loader />}
-        {error && <p>{error}</p>}
+        {error && <ErrMessage/>}
       </Section>
     </Container>
   );

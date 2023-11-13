@@ -21,20 +21,21 @@ export const addContact = createAsyncThunk(
   'contacts/sendContact',
   async (values, thunkAPI) => {
     try {
-      await axios.post(
+      const { data } = await axios.post(
         'https://654bf4b05b38a59f28eff58b.mockapi.io/api/contacts',
-        JSON.stringify(values),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+        values
       );
+      console.log(data);
+      return data;
     } catch (error) {
       thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
+
+
+
 
 // const customMidle = state => {
 //   return next => {

@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import { object, string, number } from 'yup';
 import FormError from 'components/FormError/FormError';
 import { selectorContactItems } from 'redux/selectors';
-import { addContact } from 'components/apiContacts';
+import { addContact } from 'redux/apiContacts';
 
 const schema = object({
   name: string()

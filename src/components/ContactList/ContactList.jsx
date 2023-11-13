@@ -21,11 +21,12 @@ export const ContactList = () => {
     console.log(filterContacts);
 
     const filterContact = contacts.filter(({ name }) => {
+      console.log(name);
       return name.includes(filterContacts);
     });
     return filterContact;
   };
-
+  console.log(findContact());
   return (
     <List>
       {[
