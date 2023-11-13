@@ -41,23 +41,14 @@ const contactSlice = createSlice({
     builder
       .addCase(addContact.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
-        state.contacts.error = action.payload;
-        state.contacts.items.push({
-          name: action.payload.name,
-          number: action.payload.number
-        });
-      })
-      .addCase(fetchContacts.fulfilled, handleFulfilled)
-      .addCase(fetchContacts.rejected, handleRejected) //для одного запиту
-      .addMatcher(
-        isAnyOf(fetchContacts.pending, addContact.pending),
-        handlePanding
-      ) // якщо хочаб один запиn відбувається, то виконується
-      .addMatcher(
-        isAnyOf(fetchContacts.rejected, addContact.rejected),
-        handleRejected
-      );
-  },
+        state.contacts.error = action.payload; 
+        state.contacts.items.push(action.payload)
+    })
+      .addCase(fetchContacts.fulfilled, handleFulfilled) 
+      .addCase(fetchContacts.rejected, handleRejected)                                           //для одного запиту
+      .addMatcher(isAnyOf(fetchContacts.pending, addContact.pending), handlePanding) // якщо хочаб один запиn відбувається, то виконується
+      .addMatcher(isAnyOf(fetchContacts.rejected, addContact.rejected), handleRejected)
+    } ,
 });
 
 export const { addContacts, deleteContact } = contactSlice.actions;
