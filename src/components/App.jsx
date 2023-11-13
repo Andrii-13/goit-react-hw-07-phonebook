@@ -12,7 +12,7 @@ import {
   selectorContactIsLoading,
 } from 'redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import ErrMessage from './ErrMessage/ErrMessage';
+// import ErrMessage from './ErrMessage/ErrMessage';
 import { fetchContacts } from './apiContacts';
 
 export const App = () => {
