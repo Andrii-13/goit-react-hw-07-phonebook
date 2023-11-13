@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { getContactsThunk, sendContactsThunk } from '../fetch/operations';
+import { addContact, fetchContacts } from 'components/apiContacts';
 
 const handlePanding = state => {
   state.contacts.isLoading = true;
@@ -7,13 +7,13 @@ const handlePanding = state => {
 
 const handleFulfilled = (state, action) => {
   state.contacts.isLoading = false;
-  state.contacts.error = false;
+  state.contacts.error = null;
   state.contacts.items = action.payload;
 };
 
 const handleRejected = (state, action) => {
   state.contacts.isLoading = false;
-  state.contacts.error = true;
+  state.contacts.error = action.payload;
 };
 
 const contactSlice = createSlice({
@@ -27,28 +27,37 @@ const contactSlice = createSlice({
   },
 
   reducers: {
-    addContacts(state, action) {
-      state.contacts.items.push({
-        id: action.payload.id,
-        name: action.payload.name,
-        number: action.payload.number,
-      });
-    },
+    // addContacts(state, action) {
+    //   state.contacts.items.push({
+    //     id: action.payload.id,
+    //    ,
+    //   });
+    // },
     deleteContact(state, action) {
       state.contacts.items = action.payload;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(sendContactsThunk.fulfilled, (state) => {
+      .addCase(addContact.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
-        state.contacts.error = false;    
-    })
-      .addCase(getContactsThunk.fulfilled, handleFulfilled) 
-      .addCase(getContactsThunk.rejected, handleRejected)                                           //для одного запиту
-      .addMatcher(isAnyOf(getContactsThunk.pending, sendContactsThunk.pending), handlePanding) // якщо хочаб один запиn відбувається, то виконується
-      .addMatcher(isAnyOf(getContactsThunk.rejected, sendContactsThunk.rejected), handleRejected)
-    } ,
+        state.contacts.error = action.payload;
+        state.contacts.items.push({
+          name: action.payload.name,
+          number: action.payload.number
+        });
+      })
+      .addCase(fetchContacts.fulfilled, handleFulfilled)
+      .addCase(fetchContacts.rejected, handleRejected) //для одного запиту
+      .addMatcher(
+        isAnyOf(fetchContacts.pending, addContact.pending),
+        handlePanding
+      ) // якщо хочаб один запиn відбувається, то виконується
+      .addMatcher(
+        isAnyOf(fetchContacts.rejected, addContact.rejected),
+        handleRejected
+      );
+  },
 });
 
 export const { addContacts, deleteContact } = contactSlice.actions;

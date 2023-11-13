@@ -17,6 +17,9 @@ export const ContactList = () => {
 
 
   const findContact = () => {
+    console.log(contacts);
+    console.log(filterContacts);
+
     const filterContact = contacts.filter(({ name }) => {
       return name.includes(filterContacts);
     });

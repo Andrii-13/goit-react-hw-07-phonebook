@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { object, string, number } from 'yup';
 import FormError from 'components/FormError/FormError';
-import { useEffect } from 'react';
 import { selectorContactItems } from 'redux/selectors';
-import { getContactsThunk, sendContactsThunk } from 'fetch/operations';
+import { addContact } from 'components/apiContacts';
 
 const schema = object({
   name: string()
@@ -20,10 +19,7 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectorContactItems);
 
-  useEffect(() => {  
-      dispatch(getContactsThunk());
-      
-  }, [dispatch]);
+
 
   const handleSubmit = (values, { resetForm }) => {
     resetForm();
@@ -36,9 +32,9 @@ export const ContactForm = () => {
       alert(`${values.name} is already in contacts`);
       return;
     }
-   dispatch(sendContactsThunk(values));
-   
-   
+   dispatch(addContact({name: values.name, number: values.number}));
+   console.log({name: values.name, number: values.number})
+   console.log(contacts);
   };
 
   const initialValues = {
