@@ -8,8 +8,8 @@ import { Container } from './Container/Container.styled';
 import { Section } from './Section/Section.styled';
 import { Loader } from './Loader/loader';
 import {
-  selectorContactError,
-  selectorContactIsLoading,
+  selectContactError,
+  selectContactIsLoading,
 } from 'redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrMessage from './ErrMessage/ErrMessage';
@@ -17,8 +17,8 @@ import { fetchContacts } from '../redux/operations';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectorContactIsLoading);
-  const error = useSelector(selectorContactError);
+  const isLoading = useSelector(selectContactIsLoading);
+  const error = useSelector(selectContactError);
 
   useEffect(() => {
     dispatch(fetchContacts());

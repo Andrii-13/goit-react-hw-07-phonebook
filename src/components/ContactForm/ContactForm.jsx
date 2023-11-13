@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { object, string, number } from 'yup';
 import FormError from 'components/FormError/FormError';
-import { selectorContactItems } from 'redux/selectors';
+import { selectContactItems } from 'redux/selectors';
 import { addContact } from 'redux/operations';
 
 const schema = object({
@@ -17,7 +17,7 @@ const schema = object({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectorContactItems);
+  const contacts = useSelector(selectContactItems);
 
 
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { ErrorText } from './ErrMessage.styled';
 import { useSelector } from 'react-redux';
-import { selectorContactError } from 'redux/selectors';
+import { selectContactError } from 'redux/selectors';
 
 const ErrMessage = () => {
-  const error = useSelector(selectorContactError)
+  const error = useSelector(selectContactError)
   console.log(error)
   return <ErrorText> {error.message} </ErrorText>;
 };
